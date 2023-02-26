@@ -4,7 +4,9 @@ import _throttle from 'lodash.throttle';
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
 const LOCALSTORAGE_KEY = 'videoplayer - current - time';
-const timeSaved = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)).seconds;
+const timeSaved = localStorage.getItem(LOCALSTORAGE_KEY)
+  ? JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)).seconds
+  : 0;
 
 console.log('timeSaved:', timeSaved);
 
@@ -18,3 +20,4 @@ player.on(
     // data is an object {seconds: 0.154, percent: 0, duration: 571.563}
   }, 1000)
 );
+// localStorage.removeItem(LOCALSTORAGE_KEY);
