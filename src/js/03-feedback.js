@@ -34,9 +34,9 @@ function onFormSubmit(evt) {
   console.log(JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)));
   localStorage.removeItem(LOCALSTORAGE_KEY);
 
-  let { email, message } = form.elements;
-  email.value = '';
-  message.value = '';
+  // let { email, message } = form.elements;
+  // email.value = '';
+  // message.value = '';
 
   form.reset();
 }
