@@ -1,30 +1,42 @@
-// HTML містить розмітку форми. Напиши скрипт, який буде зберігати значення полів у локальне сховище, коли користувач щось друкує.
+import _throttle from 'lodash.throttle';
 
-// <form class="feedback-form" autocomplete="off">
-//   <label>
-//     Email
-//     <input type="email" name="email" autofocus />
-//   </label>
-//   <label>
-//     Message
-//     <textarea name="message" rows="8"></textarea>
-//   </label>
-//   <button type="submit">Submit</button>
-// </form>
+const form = document.querySelector('.feedback-form');
+const LOCALSTORAGE_KEY = 'feedback - form - state';
+const savedData = localStorage.getItem(LOCALSTORAGE_KEY);
+// console.log('savedData:', savedData);
 
-// Виконуй це завдання у файлах 03-feedback.html і 03-feedback.js. Розбий його на декілька підзавдань:
+form.addEventListener('input', _throttle(onFormInput, 500));
+form.addEventListener('submit', onFormSubmit);
 
-// Відстежуй на формі подію input, і щоразу записуй у локальне сховище об'єкт з полями email і message, у яких зберігай поточні значення полів
-// форми.Нехай ключем для сховища буде рядок "feedback-form-state".
+savedData ? fillSavedFormData() : '';
 
-// Під час завантаження сторінки перевіряй стан сховища, і якщо там
-// є збережені дані, заповнюй ними поля форми.В іншому випадку поля
-// повинні бути порожніми.
+function fillSavedFormData() {
+  const { email, message } = JSON.parse(savedData);
+  form.email.value = email;
+  form.message.value = message;
+}
 
-// Під час сабміту форми очищуй сховище і поля форми, а також виводь
-// у консоль об'єкт з полями email, message та їхніми поточними
-// значеннями.
+function onFormInput(evt) {
+  const { email, message } = form.elements;
+  localStorage.setItem(
+    LOCALSTORAGE_KEY,
+    JSON.stringify({
+      email: email.value,
+      message: message.value,
+    })
+  );
+  console.log('onFormInput -> localStorage:', localStorage);
+}
 
-// Зроби так, щоб сховище оновлювалось не частіше, ніж раз на
-// 500 мілісекунд.Для цього додай до проекту і використовуй
-// бібліотеку lodash.throttle.
+function onFormSubmit(evt) {
+  evt.preventDefault();
+  // console.log(savedData);
+  console.log(JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)));
+  localStorage.removeItem(LOCALSTORAGE_KEY);
+
+  let { email, message } = form.elements;
+  email.value = '';
+  message.value = '';
+
+  form.reset();
+}
