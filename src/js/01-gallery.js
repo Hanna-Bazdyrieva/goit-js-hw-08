@@ -1,6 +1,6 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// Add imports above this line
+import { createGallaryItemsMarkup } from './01-gallery-function';
 import { galleryItems } from './gallery-items';
 
 const galleryPerentEl = document.querySelector('.gallery');
@@ -14,14 +14,3 @@ const lightbox = new SimpleLightbox('.gallery a', {
   animationSpeed: 500,
   captionPosition: 'top',
 });
-
-function createGallaryItemsMarkup() {
-  return galleryItems
-    .map(
-      ({ preview, original, description }) =>
-        `<a class="gallery__item" href="${original}">
-            <img class="gallery__image" src="${preview}" alt="${description}"  title="${description}" />
-          </a>`
-    )
-    .join('');
-}
